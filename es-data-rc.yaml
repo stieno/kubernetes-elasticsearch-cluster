@@ -5,6 +5,7 @@ metadata:
   labels:
     component: elasticsearch
     role: data
+    visualize: "true"
 spec:
   replicas: 1
   selector:
@@ -13,8 +14,10 @@ spec:
   template:
     metadata:
       labels:
+        name: es-data
         component: elasticsearch
         role: data
+        visualize: "true"
     spec:
       serviceAccount: elasticsearch
       containers:
@@ -25,18 +28,18 @@ spec:
               - IPC_LOCK
         image: quay.io/pires/docker-elasticsearch-kubernetes:1.7.2
         env:
-        - name: KUBERNETES_CA_CERTIFICATE_FILE
-          value: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         - name: NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
         - name: "CLUSTER_NAME"
-          value: "myesdb"
+          value: "servicehub"
         - name: NODE_MASTER
           value: "false"
         - name: HTTP_ENABLE
           value: "false"
+        - name: KUBERNETES_TRUST_CERT
+          value: "true"
         ports:
         - containerPort: 9300
           name: transport
@@ -46,5 +49,4 @@ spec:
           name: storage
       volumes:
       - name: storage
-        source:
-          emptyDir: {}
+        emptyDir: {}

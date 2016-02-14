@@ -5,6 +5,7 @@ metadata:
   labels:
     component: elasticsearch
     role: master
+    visualize: "true" 
 spec:
   selector:
     component: elasticsearch
